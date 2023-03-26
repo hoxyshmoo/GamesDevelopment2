@@ -114,6 +114,8 @@
 -define:TEXTCORE_FONT_ENGINE_1_5_OR_NEWER
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
+-r:"Assets/Plugins/Demigiant/DOTween/DOTween.dll"
+-r:"Assets/Plugins/Demigiant/DOTween/Editor/DOTweenEditor.dll"
 -r:"C:/Users/afamy/Documents/GitHub/GamesDevelopment2/ParkourGame/Library/PackageCache/com.unity.collab-proxy@1.17.7/Lib/Editor/PlasticSCM/log4netPlastic.dll"
 -r:"C:/Users/afamy/Documents/GitHub/GamesDevelopment2/ParkourGame/Library/PackageCache/com.unity.collab-proxy@1.17.7/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll"
 -r:"C:/Users/afamy/Documents/GitHub/GamesDevelopment2/ParkourGame/Library/PackageCache/com.unity.collab-proxy@1.17.7/Lib/Editor/PlasticSCM/Unity.Plastic.Newtonsoft.Json.dll"

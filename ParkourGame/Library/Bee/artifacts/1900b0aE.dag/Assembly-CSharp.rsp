@@ -117,6 +117,7 @@
 -define:TEXTCORE_FONT_ENGINE_1_5_OR_NEWER
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
+-r:"Assets/Plugins/Demigiant/DOTween/DOTween.dll"
 -r:"C:/Users/afamy/Documents/GitHub/GamesDevelopment2/ParkourGame/Library/PackageCache/com.unity.nuget.newtonsoft-json@3.0.2/Runtime/Newtonsoft.Json.dll"
 -r:"C:/Users/afamy/Documents/GitHub/GamesDevelopment2/ParkourGame/Library/PackageCache/com.unity.testtools.codecoverage@1.2.2/lib/ReportGenerator/ReportGeneratorMerged.dll"
 -r:"C:/Users/afamy/Documents/GitHub/GamesDevelopment2/ParkourGame/Library/PackageCache/com.unity.visualscripting@1.7.8/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
@@ -324,6 +325,7 @@
 -r:"D:/UnityHub/Unity Editor/2021.3.16f1-x86_64/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Xml.XPath.XDocument.dll"
 -r:"D:/UnityHub/Unity Editor/2021.3.16f1-x86_64/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
 -r:"D:/UnityHub/Unity Editor/2021.3.16f1-x86_64/Editor/Data/NetStandard/ref/2.1.0/netstandard.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-firstpass.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.EditorCoroutines.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Performance.Profile-Analyzer.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.PlasticSCM.Editor.ref.dll"
@@ -357,6 +359,8 @@
 "Assets/Scripts/MoveCamera.cs"
 "Assets/Scripts/PlayerCamera.cs"
 "Assets/Scripts/PlayerMovement.cs"
+"Assets/Scripts/Sliding.cs"
+"Assets/Scripts/WallRunning.cs"
 -langversion:9.0
 
 /deterministic
