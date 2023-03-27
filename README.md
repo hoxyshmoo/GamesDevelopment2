@@ -13,21 +13,21 @@ finish line while avoiding hazards and collecting power-ups.
 #### Visually appealing graphics and level design
 
 ## System Requirements
-#### Unity version: 2021.1.0 or later
-#### Operating System: Windows 11
-#### Graphics: RTX3080
-#### RAM: 32GB minimum, 64GB recommended
-#### Disk Space: 500GB
+- Unity version: 2021.1.0 or later
+- Operating System: Windows 11
+- Graphics: RTX3080
+- RAM: 32GB minimum, 64GB recommended
+- Disk Space: 500GB
 
 ## How To Play
-#### Download the latest release of Joe's Parkour Adventure.
-#### Extract the contents of the archive to a folder of your choice.
-#### Navigate to the extracted folder and run the game executable.
-#### In-game, use the following controls:
-#### Movement: W, A, S, D
-#### Jump: Spacebar
-#### Wall run: Approach a wall at an angle and hold Shift
-#### Interact with objects: E
-#### Pause: Esc
+- Download the latest release of Joe's Parkour Adventure.
+- Extract the contents of the archive to a folder of your choice.
+- Navigate to the extracted folder and run the game executable.
+- In-game, use the following controls:
+- Movement: W, A, S, D
+- Jump: Spacebar
+- Wall run: Approach a wall at an angle and hold Shift
+- Interact with objects: E
+- Pause: Esc
 
 
