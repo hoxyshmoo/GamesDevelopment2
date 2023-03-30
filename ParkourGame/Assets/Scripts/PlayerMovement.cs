@@ -67,13 +67,20 @@ public class PlayerMovement : MonoBehaviour
         crouching,
         sliding,
         air,
-        climbing
+        climbing,
+        freeze,
+        unlimited
     }
 
     public bool sliding;
     public bool crouching;
     public bool wallrunning;
     public bool climbing;
+    public bool freeze;
+    public bool unlimited;
+    public bool restricted; 
+    private bool keepMomentum;
+    
 
     // public TextMeshProUGUI text_speed;
     // public TextMeshProUGUI text_mode;
@@ -145,6 +152,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void StateHandler()
     {
+        if(freeze){
+            state=MovementState.freeze;
+            rb.velocity=Vector3.zero;
+            desiredMoveSpeed=5f;
+        }
+        if(unlimited){
+            state=MovementState.unlimited;
+            //moveSpeed=999f;
+            desiredMoveSpeed=999f;
+            return;
+        }
         if(climbing){
             state=MovementState.climbing;
             desiredMoveSpeed=climbSpeed;
@@ -162,11 +180,14 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.sliding;
 
             // increase speed by one every second
-            if (OnSlope() && rb.velocity.y < 0.1f)
+            if (OnSlope() && rb.velocity.y < 0.1f){
                 desiredMoveSpeed = slideSpeed;
-
-            else
+                keepMomentum=true;
+            }
+            else{
                 desiredMoveSpeed = sprintSpeed;
+            }
+              
         }
 
         // Mode - Crouching
@@ -196,20 +217,40 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.air;
         }
 
-        // check if desired move speed has changed drastically
-        if (Mathf.Abs(desiredMoveSpeed - lastDesiredMoveSpeed) > 4f && moveSpeed != 0)
-        {
-            StopAllCoroutines();
-            StartCoroutine(SmoothlyLerpMoveSpeed());
+        bool desiredMoveSpeedHasChanged=desiredMoveSpeed != lastDesiredMoveSpeed;
 
-            print("Lerp Started!");
+        if(desiredMoveSpeedHasChanged){
+            if(keepMomentum){
+                StopAllCoroutines();
+                StartCoroutine(SmoothlyLerpMoveSpeed());
+            }
+            else{
+                moveSpeed=desiredMoveSpeed;
+            }
         }
-        else
-        {
-            moveSpeed = desiredMoveSpeed;
-        }
+
+        // check if desired move speed has changed drastically
+        // if (Mathf.Abs(desiredMoveSpeed - lastDesiredMoveSpeed) > 4f && moveSpeed != 0)
+        // {
+        //     StopAllCoroutines();
+        //     StartCoroutine(SmoothlyLerpMoveSpeed());
+
+        //     print("Lerp Started!");
+        // }
+        // else
+        // {
+        //     moveSpeed = desiredMoveSpeed;
+        // }
+
+        //disable momentum when slowing done
 
         lastDesiredMoveSpeed = desiredMoveSpeed;
+
+        if (Mathf.Abs(desiredMoveSpeed - moveSpeed) < 0.1f){
+            keepMomentum=false;
+        }
+
+    
     }
 
     private IEnumerator SmoothlyLerpMoveSpeed()
@@ -241,6 +282,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+        if(restricted){
+            return; 
+        }
         if(climbScript.exitingWall){
             return;
         }

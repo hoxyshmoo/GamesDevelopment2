@@ -45,11 +45,13 @@ public class WallRunning : MonoBehaviour
     public PlayerCamera cam;
     private PlayerMovement pm;
     private Rigidbody rb;
+    private LedgeMovement lg;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
+        lg = GetComponent<LedgeMovement>();
     }
 
     private void Update()
@@ -179,6 +181,9 @@ public class WallRunning : MonoBehaviour
 
     private void WallJump()
     {
+        if(lg.holding || lg.exitingLedge){
+            return;
+        }
         // enter exiting wall state
         exitingWall = true;
         exitWallTimer = exitWallTime;
