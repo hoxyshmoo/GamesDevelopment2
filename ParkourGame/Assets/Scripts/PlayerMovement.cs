@@ -55,8 +55,6 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody rb;
 
-    public bool isMoving { get; private set; }          // Whether the player is currently moving
-
     public MovementState state;
     public enum MovementState
     {
@@ -79,7 +77,6 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        isMoving = false;
 
         readyToJump = true;
 
@@ -112,7 +109,6 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-        isMoving = horizontalInput != 0 || verticalInput != 0;
 
         // when to jump
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
