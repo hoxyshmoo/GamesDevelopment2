@@ -129,7 +129,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23814
+  m_Name: pb_Mesh35408
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1255,7 +1255,7 @@ GameObject:
   - component: {fileID: 517826063}
   - component: {fileID: 517826062}
   - component: {fileID: 517826061}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1599,7 +1599,7 @@ GameObject:
   - component: {fileID: 600981070}
   - component: {fileID: 600981069}
   - component: {fileID: 600981068}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2487,7 +2487,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh35284
+  m_Name: pb_Mesh35394
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2659,7 +2659,7 @@ GameObject:
   - component: {fileID: 963041160}
   - component: {fileID: 963041159}
   - component: {fileID: 963041158}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3159,7 +3159,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23848
+  m_Name: pb_Mesh35448
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3330,6 +3330,7 @@ GameObject:
   - component: {fileID: 1113025261}
   - component: {fileID: 1113025262}
   - component: {fileID: 1113025263}
+  - component: {fileID: 1113025264}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3386,6 +3387,7 @@ MonoBehaviour:
   sprintSpeed: 10
   slideSpeed: 30
   wallrunSpeed: 8.5
+  climbSpeed: 3
   speedIncreaseMultiplier: 1.5
   slopeIncreaseMultiplier: 2.5
   groundDrag: 4
@@ -3401,12 +3403,15 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
+  grounded: 0
   maxSlopeAngle: 40
+  climbScript: {fileID: 1113025264}
   orientation: {fileID: 685988417}
   state: 0
   sliding: 0
   crouching: 0
   wallrunning: 0
+  climbing: 0
 --- !u!114 &1113025262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3439,7 +3444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -3447,7 +3452,7 @@ MonoBehaviour:
   wallJumpUpForce: 7
   wallJumpSideForce: 14
   wallClimbSpeed: 1.5
-  maxWallRunTime: 1.5
+  maxWallRunTime: 1
   jumpKey: 32
   upwardsRunKey: 304
   downwardsRunKey: 306
@@ -3458,6 +3463,36 @@ MonoBehaviour:
   gravityCounterForce: 20
   orientation: {fileID: 685988417}
   cam: {fileID: 1892949996}
+--- !u!114 &1113025264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113025258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c14261afee8ac46a591947877124e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orientation: {fileID: 685988417}
+  rb: {fileID: 1113025260}
+  pm: {fileID: 1113025261}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 128
+  climbSpeed: 10
+  maxClimbTime: 0.75
+  climbJumpUpForce: 14
+  climbJumpBackForce: 12
+  jumpKey: 32
+  climbJumps: 1
+  detectionLength: 0.7
+  sphereCastRadius: 0.25
+  maxWallLookAngle: 30
+  minWallNormalAngleChange: 5
+  exitingWall: 0
+  exitWallTime: 0.2
 --- !u!43 &1297728535
 Mesh:
   m_ObjectHideFlags: 0
@@ -3636,7 +3671,7 @@ GameObject:
   - component: {fileID: 1305373157}
   - component: {fileID: 1305373156}
   - component: {fileID: 1305373155}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3972,7 +4007,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23876
+  m_Name: pb_Mesh35480
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
