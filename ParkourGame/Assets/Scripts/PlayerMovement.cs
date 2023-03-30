@@ -49,6 +49,8 @@ public class PlayerMovement : MonoBehaviour
     
     private WallClimbing climbScript;
     private Transform orientation;
+    public bool isMoving { get; private set; }
+    public Transform camera;
 
     float horizontalInput;
     float verticalInput;
@@ -79,7 +81,9 @@ public class PlayerMovement : MonoBehaviour
     public bool unlimited;
     public bool restricted; 
     private bool keepMomentum;
-    
+    private float turnSmoothTime = 0.1f;
+    private float turnSmoothVelocity;
+
 
     // public TextMeshProUGUI text_speed;
     // public TextMeshProUGUI text_mode;
@@ -88,15 +92,15 @@ public class PlayerMovement : MonoBehaviour
     {
         climbScript = GetComponent<WallClimbing>();
         orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        rb = GetComponent<Rigidbody>();
+        camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
     }
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-
+        isMoving = false;
         readyToJump = true;
-
         startYScale = transform.localScale.y;
     }
 
@@ -126,6 +130,20 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
+        isMoving = direction.magnitude >= 0.1f;
+
+        if (isMoving)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity,
+                turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            // Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            // ControllerColliderHit.Move(moveDir.normalized * moveSpeed * Time.deltaTime);
+
+        }
+
 
         // when to jump
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
