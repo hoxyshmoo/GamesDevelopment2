@@ -102,24 +102,18 @@ public class WallClimbing : MonoBehaviour
 
         lastWall = frontWallHit.transform;
         lastWallNormal = frontWallHit.normal;
-
-        /// idea - camera fov change
     }
 
     private void ClimbingMovement()
     {
         rb.velocity = new Vector3(rb.velocity.x, climbSpeed, rb.velocity.z);
 
-        /// idea - sound effect
     }
 
     private void StopClimbing()
     {
         climbing = false;
         pm.climbing = false;
-
-        /// idea - particle effect
-        /// idea - sound effect
     }
 
     private void ClimbJump()
