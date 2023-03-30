@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,11 +9,17 @@ public class PlayerCamera : MonoBehaviour
     public float sensX;
     public float sensY;
 
-    public Transform orientation;
-    public Transform camHolder;
+    private Transform orientation;
+    private Transform camHolder;
 
     float xRotation;
     float yRotation;
+
+    private void Awake()
+    {
+        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        camHolder = GameObject.FindGameObjectWithTag("CameraHolder").transform;
+    }
 
     private void Start()
     {

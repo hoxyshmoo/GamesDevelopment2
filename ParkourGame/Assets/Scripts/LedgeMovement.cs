@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,10 @@ using UnityEngine;
 public class LedgeMovement : MonoBehaviour
 {
     [Header("References")]
-    public PlayerMovement pm;
-    public Transform orientation;
-    public Transform cam;
-    public Rigidbody rb;
+    private PlayerMovement pm;
+    private Transform orientation;
+    private Transform cam;
+    private Rigidbody rb;
 
     [Header("Ledge Grabbing")]
     public float moveToLedgeSpeed;
@@ -38,6 +39,15 @@ public class LedgeMovement : MonoBehaviour
     public bool exitingLedge;
     public float exitLedgeTime;
     private float exitLedgeTimer;
+
+    private void Awake()
+    {
+        cam = GameObject.FindWithTag("MainCamera").GetComponent<PlayerCamera>().transform;
+        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        rb = GetComponent<Rigidbody>();
+        pm = GetComponent<PlayerMovement>();
+
+    }
 
     private void Update()
     {

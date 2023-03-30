@@ -5,11 +5,11 @@ using UnityEngine;
 public class WallClimbing : MonoBehaviour
 {
     [Header("References")]
-    public Transform orientation;
-    public Rigidbody rb;
-    public PlayerMovement pm;
     public LayerMask whatIsWall;
-    public LedgeMovement lg;
+    private Transform orientation;
+    private Rigidbody rb;
+    private PlayerMovement pm;
+    private LedgeMovement lg;
 
     [Header("Climbing")]
     public float climbSpeed;
@@ -46,6 +46,9 @@ public class WallClimbing : MonoBehaviour
 
     private void Start(){
         lg = GetComponent<LedgeMovement>();
+        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        rb = GetComponent<Rigidbody>();
+        pm = GetComponent<PlayerMovement>();
     }
 
     private void Update()

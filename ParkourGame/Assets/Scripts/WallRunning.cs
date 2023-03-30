@@ -41,8 +41,8 @@ public class WallRunning : MonoBehaviour
     public float gravityCounterForce;
 
     [Header("References")]
-    public Transform orientation;
-    public PlayerCamera cam;
+    private Transform orientation;
+    private PlayerCamera cam;
     private PlayerMovement pm;
     private Rigidbody rb;
     private LedgeMovement lg;
@@ -52,6 +52,8 @@ public class WallRunning : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
         lg = GetComponent<LedgeMovement>();
+        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        cam = GameObject.FindWithTag("MainCamera").GetComponent<PlayerCamera>();
     }
 
     private void Update()

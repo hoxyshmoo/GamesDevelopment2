@@ -5,8 +5,8 @@ using UnityEngine;
 public class Sliding : MonoBehaviour
 {
     [Header("References")]
-    public Transform orientation;
-    public Transform playerObj;
+    private Transform orientation;
+    private Transform playerObj;
     private Rigidbody rb;
     private PlayerMovement pm;
 
@@ -28,6 +28,8 @@ public class Sliding : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
+        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        playerObj = GameObject.Find("PlayerObj").transform;
 
         startYScale = playerObj.localScale.y;
     }

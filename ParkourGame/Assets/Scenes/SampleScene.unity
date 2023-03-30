@@ -129,7 +129,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24294
+  m_Name: pb_Mesh44190
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -293,7 +293,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24370
+  m_Name: pb_Mesh44236
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1307,11 +1307,6 @@ Transform:
   m_Father: {fileID: 1733515103}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &469378681 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3373006367364530090, guid: bda546b6e52ab334da86bca11d3ba1a8, type: 3}
-  m_PrefabInstance: {fileID: 1454692422}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &476878066
 GameObject:
   m_ObjectHideFlags: 0
@@ -2104,7 +2099,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24242
+  m_Name: pb_Mesh44136
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2268,7 +2263,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24384
+  m_Name: pb_Mesh44250
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2526,7 +2521,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24440
+  m_Name: pb_Mesh44310
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2690,7 +2685,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24280
+  m_Name: pb_Mesh44176
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3198,7 +3193,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24256
+  m_Name: pb_Mesh44150
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3362,7 +3357,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24336
+  m_Name: pb_Mesh44218
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4214,7 +4209,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24422
+  m_Name: pb_Mesh44288
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4722,7 +4717,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24400
+  m_Name: pb_Mesh44266
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4892,7 +4887,7 @@ GameObject:
   - component: {fileID: 1417232153}
   m_Layer: 0
   m_Name: CameraHolder
-  m_TagString: Untagged
+  m_TagString: CameraHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4909,7 +4904,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c24ec2840009c4abbf305e7c40e1d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPosition: {fileID: 469378681}
 --- !u!4 &1417232154
 Transform:
   m_ObjectHideFlags: 0
@@ -5277,6 +5271,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3373006367364530091, guid: bda546b6e52ab334da86bca11d3ba1a8, type: 3}
+      propertyPath: m_TagString
+      value: CameraPos
+      objectReference: {fileID: 0}
     - target: {fileID: 3373006367651244512, guid: bda546b6e52ab334da86bca11d3ba1a8, type: 3}
       propertyPath: cam
       value: 
@@ -5333,13 +5331,12 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 1892949995}
+    - target: {fileID: 3373006368344611151, guid: bda546b6e52ab334da86bca11d3ba1a8, type: 3}
+      propertyPath: m_TagString
+      value: Orientation
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bda546b6e52ab334da86bca11d3ba1a8, type: 3}
---- !u!4 &1498130751 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3373006368344611150, guid: bda546b6e52ab334da86bca11d3ba1a8, type: 3}
-  m_PrefabInstance: {fileID: 1454692422}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1733515102
 GameObject:
   m_ObjectHideFlags: 0
@@ -7343,7 +7340,7 @@ GameObject:
   - component: {fileID: 1892949996}
   m_Layer: 0
   m_Name: PlayerCam
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7377,8 +7374,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensX: 400
   sensY: 400
-  orientation: {fileID: 1498130751}
-  camHolder: {fileID: 1417232154}
 --- !u!81 &1892949997
 AudioListener:
   m_ObjectHideFlags: 0

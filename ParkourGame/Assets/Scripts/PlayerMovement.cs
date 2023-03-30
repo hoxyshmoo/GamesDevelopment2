@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,11 +46,9 @@ public class PlayerMovement : MonoBehaviour
     public float maxSlopeAngle;
     private RaycastHit slopeHit;
     private bool exitingSlope;
-
-    [Header("WallClimbingReference")]
-    public WallClimbing climbScript;
-
-    public Transform orientation;
+    
+    private WallClimbing climbScript;
+    private Transform orientation;
 
     float horizontalInput;
     float verticalInput;
@@ -84,6 +83,12 @@ public class PlayerMovement : MonoBehaviour
 
     // public TextMeshProUGUI text_speed;
     // public TextMeshProUGUI text_mode;
+
+    private void Awake()
+    {
+        climbScript = GetComponent<WallClimbing>();
+        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+    }
 
     private void Start()
     {
