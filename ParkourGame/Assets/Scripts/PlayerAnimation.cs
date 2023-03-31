@@ -18,6 +18,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         // Update movement parameters of the player
         animator.SetBool("IsMoving", playerMovement.isMoving);
+        animator.SetBool("IsRunning", playerMovement.state == PlayerMovement.MovementState.sprinting);
     }
     
 }

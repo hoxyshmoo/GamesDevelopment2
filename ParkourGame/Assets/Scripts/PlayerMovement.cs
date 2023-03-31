@@ -11,26 +11,26 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed;
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
-    public float walkSpeed;
-    public float sprintSpeed;
-    public float slideSpeed;
-    public float wallrunSpeed;
-    public float climbSpeed;
+    public float walkSpeed = 4f;  // Was 7 before
+    public float sprintSpeed = 10f;
+    public float slideSpeed = 15f;  // Was 30 before
+    public float wallrunSpeed = 8.5f;
+    public float climbSpeed = 3f;
 
-    public float speedIncreaseMultiplier;
-    public float slopeIncreaseMultiplier;
+    public float speedIncreaseMultiplier = 1.5f;
+    public float slopeIncreaseMultiplier = 2.5f;
 
-    public float groundDrag;
+    public float groundDrag = 4f;
 
     [Header("Jumping")]
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
+    public float jumpForce = 12f;
+    public float jumpCooldown = 0.25f;
+    public float airMultiplier = 0.4f;
     bool readyToJump;
 
     [Header("Crouching")]
-    public float crouchSpeed;
-    public float crouchYScale;
+    public float crouchSpeed = 1.5f; // Was 3.5 before
+    public float crouchYScale = 0.5f;
     private float startYScale;
 
     [Header("Keybinds")]
@@ -39,12 +39,12 @@ public class PlayerMovement : MonoBehaviour
     public KeyCode crouchKey = KeyCode.LeftControl;
 
     [Header("Ground Check")]
-    public float playerHeight;
+    public float playerHeight = 2f;
     public LayerMask whatIsGround;
     public bool grounded;
 
     [Header("Slope Handling")]
-    public float maxSlopeAngle;
+    public float maxSlopeAngle = 40f;
     private RaycastHit slopeHit;
     private bool exitingSlope;
     
@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody rb;
 
-    public MovementState state;
+    public MovementState state { get; private set; }
     public enum MovementState
     {
         walking,
