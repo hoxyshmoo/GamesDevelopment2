@@ -16,11 +16,13 @@ public class PlayerMovement : MonoBehaviour
     public float slideSpeed = 15f;  // Was 30 before
     public float wallrunSpeed = 8.5f;
     public float climbSpeed = 3f;
-
+    public float playerHeight = 2f;
     public float speedIncreaseMultiplier = 1.5f;
     public float slopeIncreaseMultiplier = 2.5f;
-
     public float groundDrag = 4f;
+    private float turnSmoothTime = 0.1f;
+    private float turnSmoothVelocity;
+    private Vector3 moveDirection;
 
     [Header("Jumping")]
     public float jumpForce = 12f;
@@ -30,8 +32,11 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Crouching")]
     public float crouchSpeed = 1.5f; // Was 3.5 before
-    public float crouchYScale = 0.5f;
+    public float heightWhenCrouching = 0.5f;
     private float startYScale;
+    private float heightWhenNotCrouching;
+    private CapsuleCollider capsuleCollider;
+    private float yOffSetWhenCrouching = -0.5f;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -39,7 +44,6 @@ public class PlayerMovement : MonoBehaviour
     public KeyCode crouchKey = KeyCode.LeftControl;
 
     [Header("Ground Check")]
-    public float playerHeight = 2f;
     public LayerMask whatIsGround;
     public bool grounded { get; private set; }
 
@@ -47,22 +51,21 @@ public class PlayerMovement : MonoBehaviour
     public float maxSlopeAngle = 40f;
     private RaycastHit slopeHit;
     private bool exitingSlope;
-    
-    private WallClimbing climbScript;
-    public bool isMoving { get; private set; }
-    
+
     [Header("Camera Settings")]
     private Transform camera;
     private GameObject freeLookCam;
     private GameObject lockedLookCam;
-
+    
+    [Header("References")]
+    private PlayerAnimation animator;
+    private WallClimbing climbScript;
+    public bool isMoving { get; private set; }
+    private Rigidbody rb;
 
     float horizontalInput;
     float verticalInput;
 
-    Vector3 moveDirection;
-
-    Rigidbody rb;
 
     public MovementState state { get; private set; }
     public enum MovementState
@@ -86,11 +89,6 @@ public class PlayerMovement : MonoBehaviour
     public bool unlimited;
     public bool restricted; 
     private bool keepMomentum;
-    private float turnSmoothTime = 0.1f;
-    private float turnSmoothVelocity;
-    private PlayerAnimation animator;
-
-
     // public TextMeshProUGUI text_speed;
     // public TextMeshProUGUI text_mode;
 
@@ -102,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
         freeLookCam = GameObject.FindWithTag("CameraFreeLook");
         lockedLookCam = GameObject.FindWithTag("CameraLockedLook");
         animator = GetComponentInChildren<PlayerAnimation>();
+        capsuleCollider = GetComponentInChildren<CapsuleCollider>();
 
     }
 
@@ -110,9 +109,9 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
         isMoving = false;
         readyToJump = true;
-        startYScale = transform.localScale.y;
         freeLookCam.SetActive(true);
         lockedLookCam.SetActive(false);
+        heightWhenNotCrouching = playerHeight;
     }
 
     private void Update()
@@ -174,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
             }
             
             // When we jump while walking we delay the start of the jump motion to sync with the animation
-            // The movmenet is also stopped for a short period of time to make it realistc
+            // The movement is also stopped for a short period of time to make it realistic
             if (state == MovementState.walking)
             {
                 float delayBeforeMovementStop = 0.3f;
@@ -195,19 +194,25 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // start crouch
-        if (Input.GetKeyDown(crouchKey) && horizontalInput == 0 && verticalInput == 0)
+        if (Input.GetKeyDown(crouchKey) && !isMoving)
         {
-            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+            // Move the capsule collider to the new temporary position
+            capsuleCollider.center = new Vector3(0f, yOffSetWhenCrouching, 0f);
+            
+            // Make it smaller
+            capsuleCollider.height = heightWhenCrouching;
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-
             crouching = true;
         }
 
         // stop crouch
-        if (Input.GetKeyUp(crouchKey))
+        if (Input.GetKeyUp(crouchKey) && crouching)
         {
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-
+            // Move the capsule back to it's original position
+            capsuleCollider.center = new Vector3(0f, 0, 0f);
+            
+            // Change the height back to original
+            capsuleCollider.height = heightWhenNotCrouching;
             crouching = false;
         }
     }

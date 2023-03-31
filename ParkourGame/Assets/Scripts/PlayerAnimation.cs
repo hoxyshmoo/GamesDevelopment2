@@ -19,6 +19,7 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("IsMoving", playerMovement.isMoving);
         animator.SetBool("IsRunning", playerMovement.state == PlayerMovement.MovementState.sprinting);
         animator.SetBool("IsOnGround", playerMovement.grounded);
+        animator.SetBool("Crouching", playerMovement.state == PlayerMovement.MovementState.crouching);
     }
 
     public void TriggerJump()
