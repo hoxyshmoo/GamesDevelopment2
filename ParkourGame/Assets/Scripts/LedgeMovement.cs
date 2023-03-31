@@ -132,7 +132,7 @@ public class LedgeMovement : MonoBehaviour
         if(distanceToLedge > 1f)
         {
             if(rb.velocity.magnitude < moveToLedgeSpeed)
-                rb.AddForce(directionToLedge.normalized * moveToLedgeSpeed * 1000f * Time.deltaTime);
+                rb.AddForce(directionToLedge.normalized * (moveToLedgeSpeed * 1000f * Time.deltaTime));
         }
 
         // Hold onto ledge
