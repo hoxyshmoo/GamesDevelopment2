@@ -132,17 +132,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        CalculateMoveDirection();
         MovePlayer();
-        Debug.Log(rb.velocity);
     }
 
-    private void MyInput()
+    private void CalculateMoveDirection()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
         isMoving = direction.magnitude >= 0.1f;
-
         if (isMoving)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
@@ -155,8 +154,10 @@ public class PlayerMovement : MonoBehaviour
         {
             moveDirection = Vector3.zero;
         }
+    }
 
-
+    private void MyInput()
+    {
         // when to jump
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
