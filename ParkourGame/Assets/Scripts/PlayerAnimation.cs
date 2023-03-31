@@ -6,7 +6,7 @@ public class PlayerAnimation : MonoBehaviour
 {
     private Animator animator;
     private PlayerMovement playerMovement;
-    
+
     private void Awake()
     {
         // Get the Animator and PlayerMovement components
@@ -16,7 +16,6 @@ public class PlayerAnimation : MonoBehaviour
     
     private void Update()
     {
-        // Update movement parameters of the player
         animator.SetBool("IsMoving", playerMovement.isMoving);
         animator.SetBool("IsRunning", playerMovement.state == PlayerMovement.MovementState.sprinting);
     }
