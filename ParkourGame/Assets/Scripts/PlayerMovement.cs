@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight = 2f;
     public LayerMask whatIsGround;
-    public bool grounded;
+    public bool grounded { get; private set; }
 
     [Header("Slope Handling")]
     public float maxSlopeAngle = 40f;
@@ -88,6 +88,7 @@ public class PlayerMovement : MonoBehaviour
     private bool keepMomentum;
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
+    private PlayerAnimation animator;
 
 
     // public TextMeshProUGUI text_speed;
@@ -100,7 +101,8 @@ public class PlayerMovement : MonoBehaviour
         camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         freeLookCam = GameObject.FindWithTag("CameraFreeLook");
         lockedLookCam = GameObject.FindWithTag("CameraLockedLook");
-        
+        animator = GetComponentInChildren<PlayerAnimation>();
+
     }
 
     private void Start()
@@ -159,13 +161,37 @@ public class PlayerMovement : MonoBehaviour
     private void MyInput()
     {
         // when to jump
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded && isMoving)
         {
-            readyToJump = false;
+            if (state == MovementState.sprinting)
+            {
+                readyToJump = false;
+                animator.TriggerJump();
 
-            Jump();
+                Jump();
 
-            Invoke(nameof(ResetJump), jumpCooldown);
+                Invoke(nameof(ResetJump), jumpCooldown);
+            }
+            
+            // When we jump while walking we delay the start of the jump motion to sync with the animation
+            // The movmenet is also stopped for a short period of time to make it realistc
+            if (state == MovementState.walking)
+            {
+                float delayBeforeMovementStop = 0.3f;
+                float delayBeforeJump = 0.4f;
+                readyToJump = false;
+                animator.TriggerJump();
+                
+                // Stop the player movement right before jumping
+                Invoke(nameof(StopPlayerMovement), delayBeforeMovementStop);
+
+                // Resume the player movement and do the jumping
+                Invoke(nameof(ResumePlayerMovement), delayBeforeMovementStop);
+                Invoke(nameof(Jump), delayBeforeJump);
+
+                Invoke(nameof(ResetJump), jumpCooldown);
+            }
+
         }
 
         // start crouch
@@ -184,6 +210,16 @@ public class PlayerMovement : MonoBehaviour
 
             crouching = false;
         }
+    }
+
+    private void StopPlayerMovement()
+    {
+        rb.isKinematic = true;
+    }
+    
+    private void ResumePlayerMovement()
+    {
+        rb.isKinematic = false;
     }
     
     private void StateHandler()
