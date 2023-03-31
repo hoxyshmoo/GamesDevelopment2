@@ -48,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
     private bool exitingSlope;
     
     private WallClimbing climbScript;
-    private Transform orientation;
     public bool isMoving { get; private set; }
     public Transform camera;
 
@@ -91,7 +90,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         climbScript = GetComponent<WallClimbing>();
-        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
         rb = GetComponent<Rigidbody>();
         camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
     }
@@ -124,6 +122,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         MovePlayer();
+        Debug.Log(rb.velocity);
     }
 
     private void MyInput()
@@ -138,10 +137,12 @@ public class PlayerMovement : MonoBehaviour
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity,
                 turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-            // Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            // ControllerColliderHit.Move(moveDir.normalized * moveSpeed * Time.deltaTime);
-
+            transform.rotation = Quaternion.Euler(0f, angle, 0f); 
+            moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+        }
+        else
+        {
+            moveDirection = Vector3.zero;
         }
 
 
@@ -172,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
             crouching = false;
         }
     }
-
+    
     private void StateHandler()
     {
         if(freeze){
@@ -305,14 +306,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        if(restricted){
+        if(restricted || climbScript.exitingWall){
             return; 
         }
-        if(climbScript.exitingWall){
-            return;
-        }
-        // calculate movement direction
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         // on slope
         if (OnSlope() && !exitingSlope)

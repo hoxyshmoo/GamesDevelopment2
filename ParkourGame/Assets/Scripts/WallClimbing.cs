@@ -46,7 +46,7 @@ public class WallClimbing : MonoBehaviour
 
     private void Start(){
         lg = GetComponent<LedgeMovement>();
-        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        orientation = transform;
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
     }

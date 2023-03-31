@@ -51,7 +51,7 @@ public class WallRunning : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
         lg = GetComponent<LedgeMovement>();
-        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        orientation = transform;
     }
 
     private void Update()
@@ -135,7 +135,7 @@ public class WallRunning : MonoBehaviour
 
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        // ToDo: Cam effects removed
+        // ToDo: Cam effects removed, will be added back 
         // // apply camera effects
         // cam.DoFov(90f);
         // if (wallLeft) cam.DoTilt(-5f);

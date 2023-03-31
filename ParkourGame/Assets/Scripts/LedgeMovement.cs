@@ -40,7 +40,7 @@ public class LedgeMovement : MonoBehaviour
 
     private void Awake()
     {
-        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        orientation = transform;
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
 

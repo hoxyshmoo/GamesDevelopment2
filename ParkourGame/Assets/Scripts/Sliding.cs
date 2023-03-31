@@ -28,7 +28,7 @@ public class Sliding : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
-        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        orientation = transform;
         playerObj = GameObject.Find("PlayerObj").transform;
 
         startYScale = playerObj.localScale.y;
