@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using TMPro;
 
@@ -49,7 +50,12 @@ public class PlayerMovement : MonoBehaviour
     
     private WallClimbing climbScript;
     public bool isMoving { get; private set; }
-    public Transform camera;
+    
+    [Header("Camera Settings")]
+    private Transform camera;
+    private GameObject freeLookCam;
+    private GameObject lockedLookCam;
+
 
     float horizontalInput;
     float verticalInput;
@@ -92,6 +98,9 @@ public class PlayerMovement : MonoBehaviour
         climbScript = GetComponent<WallClimbing>();
         rb = GetComponent<Rigidbody>();
         camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        freeLookCam = GameObject.FindWithTag("CameraFreeLook");
+        lockedLookCam = GameObject.FindWithTag("CameraLockedLook");
+        
     }
 
     private void Start()
@@ -100,6 +109,8 @@ public class PlayerMovement : MonoBehaviour
         isMoving = false;
         readyToJump = true;
         startYScale = transform.localScale.y;
+        freeLookCam.SetActive(true);
+        lockedLookCam.SetActive(false);
     }
 
     private void Update()
@@ -226,6 +237,9 @@ public class PlayerMovement : MonoBehaviour
         {
             state = MovementState.sprinting;
             desiredMoveSpeed = sprintSpeed;
+            freeLookCam.SetActive(false);
+            lockedLookCam.SetActive(true);
+            // freeLookCam.m_Lens.FieldOfView = FocusedFOV;
         }
 
         // Mode - Walking
@@ -233,6 +247,9 @@ public class PlayerMovement : MonoBehaviour
         {
             state = MovementState.walking;
             desiredMoveSpeed = walkSpeed;
+            freeLookCam.SetActive(true);
+            lockedLookCam.SetActive(false);
+            // freeLookCam.m_Lens.FieldOfView = FreeLookFOV;
         }
 
         // Mode - Air
