@@ -211,12 +211,6 @@ public class PlayerMovement : MonoBehaviour
             changeCapsuleColliderToCrouchSize();
 
         }
-
-        // Stop sliding
-        if (Input.GetKeyUp(slideKey) && sliding)
-        {
-            slidingMovement.StopSlide();
-        }
     }
 
     private void changeCapsuleColliderToCrouchSize()

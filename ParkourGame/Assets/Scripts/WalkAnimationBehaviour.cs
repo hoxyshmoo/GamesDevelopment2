@@ -10,7 +10,7 @@ public class WalkAnimationBehaviour : StateMachineBehaviour
         // If the player is idle then update the random value for the player
         // This defines which walk animation will be played for the player
         // While they are moving this won't change but resets everytime they stop
-        animator.SetFloat("RunAnimationRandom", Random.Range(0, 4));
+        animator.SetFloat("WalkAnimationRandom", Random.Range(0, 4));
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

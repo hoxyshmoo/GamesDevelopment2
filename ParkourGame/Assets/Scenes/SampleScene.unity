@@ -3657,26 +3657,14 @@ PrefabInstance:
     - target: {fileID: 952671597, guid: 342ff67a7c1f39148b2666691ae44d73, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 05603c65bc94c324e9b78cfa98ddfb74, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 952671597, guid: 342ff67a7c1f39148b2666691ae44d73, type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig7:Hips'\n\tTransform 'mixamorig7:RightUpLeg'\n\tTransform
-        'mixamorig7:LeftHandRing1'\n\tTransform 'mixamorig7:RightHandRing1'\n\tTransform
-        'mixamorig7:RightHandThumb3'\n\tTransform 'mixamorig7:LeftHandIndex1'\n\tTransform
-        'mixamorig7:RightHandMiddle2'\n\tTransform 'mixamorig7:LeftFoot'\n\tTransform
-        'mixamorig7:LeftHandRing3'\n\tTransform 'mixamorig7:RightHandPinky1'\n\tand
-        more ...\n\tFrom animation clip 'Run'\n\tFrom animation clip 'Dancing Twerk'\n\tFrom
-        animation clip 'Happy Walk'\n\tFrom animation clip 'Weird Walking'\n\tFrom
-        animation clip 'Strut Walking'\n\tFrom animation clip 'Walking'\n\tFrom animation
-        clip 'Ninja Jump'\n\tFrom animation clip 'Walk Jump'\n\tFrom animation clip
-        'Crouch Standing To Crouch'\n\tFrom animation clip 'Crouch Idle'\n\tand more
-        ..."
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 952671597, guid: 342ff67a7c1f39148b2666691ae44d73, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 135753344018228256, guid: 342ff67a7c1f39148b2666691ae44d73, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
