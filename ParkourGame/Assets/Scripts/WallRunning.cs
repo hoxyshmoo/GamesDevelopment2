@@ -16,8 +16,6 @@ public class WallRunning : MonoBehaviour
 
     [Header("Input")]
     public KeyCode jumpKey = KeyCode.Space;
-    public KeyCode upwardsRunKey = KeyCode.LeftShift;
-    public KeyCode downwardsRunKey = KeyCode.LeftControl;
     private bool upwardsRunning;
     private bool downwardsRunning;
     private float horizontalInput;
@@ -29,7 +27,7 @@ public class WallRunning : MonoBehaviour
     private RaycastHit leftWallhit;
     private RaycastHit rightWallhit;
     private bool wallLeft;
-    private bool wallRight;
+    public bool wallRight { get; private set; }
 
     [Header("Exiting")]
     private bool exitingWall;
@@ -45,6 +43,7 @@ public class WallRunning : MonoBehaviour
     private PlayerMovement pm;
     private Rigidbody rb;
     private LedgeMovement lg;
+    private Transform camera;
 
     private void Start()
     {
@@ -52,6 +51,7 @@ public class WallRunning : MonoBehaviour
         pm = GetComponent<PlayerMovement>();
         lg = GetComponent<LedgeMovement>();
         orientation = transform;
+        camera =  GameObject.FindGameObjectWithTag("MainCamera").transform;
     }
 
     private void Update()
@@ -82,13 +82,12 @@ public class WallRunning : MonoBehaviour
         // Getting Inputs
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-
-        upwardsRunning = Input.GetKey(upwardsRunKey);
-        downwardsRunning = Input.GetKey(downwardsRunKey);
+        
 
         // State 1 - Wallrunning
         if((wallLeft || wallRight) && verticalInput > 0 && AboveGround() && !exitingWall)
         {
+            
             if (!pm.wallrunning)
                 StartWallRun();
 
@@ -157,9 +156,10 @@ public class WallRunning : MonoBehaviour
         rb.AddForce(wallForward * wallRunForce, ForceMode.Force);
 
         // upwards/downwards force
-        if (upwardsRunning)
+        // ToDo: Make it move by the camera.
+        if (true)
             rb.velocity = new Vector3(rb.velocity.x, wallClimbSpeed, rb.velocity.z);
-        if (downwardsRunning)
+        if (false)
             rb.velocity = new Vector3(rb.velocity.x, -wallClimbSpeed, rb.velocity.z);
 
         // push to wall force

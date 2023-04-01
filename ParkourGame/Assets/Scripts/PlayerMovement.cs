@@ -45,7 +45,8 @@ public class PlayerMovement : MonoBehaviour
     private RaycastHit slopeHit;
     private bool exitingSlope;
 
-    [Header("Camera Settings")] private Transform camera;
+    [Header("Camera Settings")] 
+    private Transform camera;
     private GameObject freeLookCam;
     private GameObject lockedLookCam;
 

@@ -6,12 +6,15 @@ public class PlayerAnimation : MonoBehaviour
 {
     private Animator animator;
     private PlayerMovement playerMovement;
+    private WallRunning wallRunning;
 
     private void Awake()
     {
         // Get the Animator and PlayerMovement components
         animator = GetComponentInChildren<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
+        wallRunning = GameObject.FindGameObjectWithTag("Player").GetComponent<WallRunning>();
+
     }
     
     private void Update()
@@ -21,6 +24,9 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("IsOnGround", playerMovement.grounded);
         animator.SetBool("Crouching", playerMovement.state == PlayerMovement.MovementState.crouching);
         animator.SetBool("Sliding", playerMovement.state == PlayerMovement.MovementState.sliding);
+        animator.SetBool("IsWallRunning", playerMovement.state == PlayerMovement.MovementState.wallrunning);
+        animator.SetBool("IsInAir", playerMovement.state == PlayerMovement.MovementState.air);
+        animator.SetBool("MirrorAnimation", wallRunning.wallRight);
     }
 
     public void TriggerJump()
