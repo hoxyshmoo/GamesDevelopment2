@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Keybinds")] public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
-    public KeyCode crouchKey = KeyCode.LeftAlt;
+    public KeyCode crouchKey = KeyCode.Q;
     public KeyCode slideKey = KeyCode.Q;
 
     [Header("Ground Check")] public LayerMask whatIsGround;
@@ -190,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // start crouch if the player is not moving and presses the crouching key
-        if (Input.GetKeyDown(crouchKey) && !isMoving && grounded)
+        if (Input.GetKeyDown(crouchKey) && grounded && !Input.GetKey(sprintKey))
         {
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
             crouching = true;
