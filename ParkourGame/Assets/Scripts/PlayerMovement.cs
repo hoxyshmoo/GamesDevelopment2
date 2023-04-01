@@ -7,13 +7,12 @@ using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement")]
-    private float moveSpeed;
+    [Header("Movement")] private float moveSpeed;
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
-    public float walkSpeed = 4f;  // Was 7 before
+    public float walkSpeed = 4f; // Was 7 before
     public float sprintSpeed = 10f;
-    public float slideSpeed = 15f;  // Was 30 before
+    public float slideSpeed = 15f; // Was 30 before
     public float wallrunSpeed = 8.5f;
     public float climbSpeed = 3f;
     public float playerHeight = 2f;
@@ -24,42 +23,33 @@ public class PlayerMovement : MonoBehaviour
     private float turnSmoothVelocity;
     private Vector3 moveDirection;
 
-    [Header("Jumping")]
-    public float jumpForce = 12f;
+    [Header("Jumping")] public float jumpForce = 12f;
     public float jumpCooldown = 0.25f;
     public float airMultiplier = 0.4f;
     bool readyToJump;
 
-    [Header("Crouching")]
-    public float crouchSpeed = 1.5f; // Was 3.5 before
+    [Header("Crouching")] public float crouchSpeed = 1.5f; // Was 3.5 before
     public float heightWhenCrouching = 0.5f;
-    private float startYScale;
-    private float heightWhenNotCrouching;
     private CapsuleCollider capsuleCollider;
     private float yOffSetWhenCrouching = -0.5f;
 
-    [Header("Keybinds")]
-    public KeyCode jumpKey = KeyCode.Space;
+    [Header("Keybinds")] public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
     public KeyCode crouchKey = KeyCode.LeftAlt;
     public KeyCode slideKey = KeyCode.Q;
 
-    [Header("Ground Check")]
-    public LayerMask whatIsGround;
+    [Header("Ground Check")] public LayerMask whatIsGround;
     public bool grounded { get; private set; }
 
-    [Header("Slope Handling")]
-    public float maxSlopeAngle = 40f;
+    [Header("Slope Handling")] public float maxSlopeAngle = 40f;
     private RaycastHit slopeHit;
     private bool exitingSlope;
 
-    [Header("Camera Settings")]
-    private Transform camera;
+    [Header("Camera Settings")] private Transform camera;
     private GameObject freeLookCam;
     private GameObject lockedLookCam;
-    
-    [Header("References")]
-    private PlayerAnimation animator;
+
+    [Header("References")] private PlayerAnimation animator;
     private WallClimbing climbScript;
     public bool isMoving { get; private set; }
     private Rigidbody rb;
@@ -70,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     public MovementState state { get; private set; }
+
     public enum MovementState
     {
         walking,
@@ -89,7 +80,8 @@ public class PlayerMovement : MonoBehaviour
     public bool climbing;
     public bool freeze;
     public bool unlimited;
-    public bool restricted; 
+    public bool restricted;
+
     private bool keepMomentum;
     // public TextMeshProUGUI text_speed;
     // public TextMeshProUGUI text_mode;
@@ -114,9 +106,8 @@ public class PlayerMovement : MonoBehaviour
         readyToJump = true;
         freeLookCam.SetActive(true);
         lockedLookCam.SetActive(false);
-        heightWhenNotCrouching = playerHeight;
     }
-    
+
     // ToDo: Make the capsule smaller when the player is crouching
 
     private void Update()
@@ -127,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
         MyInput();
         SpeedControl();
         StateHandler();
-       // TextStuff();
+        // TextStuff();
 
         // handle drag
         if (grounded)
@@ -153,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity,
                 turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f); 
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
             moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         }
         else
@@ -176,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
 
                 Invoke(nameof(ResetJump), jumpCooldown);
             }
-            
+
             // When we jump while walking we delay the start of the jump motion to sync with the animation
             // The movement is also stopped for a short period of time to make it realistic
             if (state == MovementState.walking)
@@ -185,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
                 float delayBeforeJump = 0.4f;
                 readyToJump = false;
                 animator.TriggerJump();
-                
+
                 // Stop the player movement right before jumping
                 Invoke(nameof(StopPlayerMovement), delayBeforeMovementStop);
 
@@ -201,33 +192,49 @@ public class PlayerMovement : MonoBehaviour
         // start crouch if the player is not moving and presses the crouching key
         if (Input.GetKeyDown(crouchKey) && !isMoving && grounded)
         {
-            // Move the capsule collider to the new temporary position
-            capsuleCollider.center = new Vector3(0f, yOffSetWhenCrouching, 0f);
-            
-            // Make it smaller
-            capsuleCollider.height = heightWhenCrouching;
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
             crouching = true;
+            changeCapsuleColliderToCrouchSize();
         }
 
         // stop crouch
         if (Input.GetKeyUp(crouchKey) && crouching)
         {
-            // Move the capsule back to it's original position
-            capsuleCollider.center = new Vector3(0f, 0, 0f);
-            
-            // Change the height back to original
-            capsuleCollider.height = heightWhenNotCrouching;
             crouching = false;
+            changeCapsuleColliderToPlayerSize();
         }
-        
+
         // Start sliding if the player is sprinting and presses the button
         if (Input.GetKeyDown(slideKey) && Input.GetKey(sprintKey) && isMoving && grounded && !sliding)
+        {
             slidingMovement.StartSlide();
-        
+            changeCapsuleColliderToCrouchSize();
+
+        }
+
         // Stop sliding
         if (Input.GetKeyUp(slideKey) && sliding)
+        {
             slidingMovement.StopSlide();
+        }
+    }
+
+    private void changeCapsuleColliderToCrouchSize()
+    {
+        // Move the capsule collider to the new temporary position
+        capsuleCollider.center = new Vector3(0f, yOffSetWhenCrouching, 0f);
+
+        // Make it smaller
+        capsuleCollider.height = heightWhenCrouching;
+    }
+    
+    public void changeCapsuleColliderToPlayerSize()
+    {
+        // Move the capsule back to it's original position
+        capsuleCollider.center = new Vector3(0f, 0, 0f);
+
+        // Change the height back to original
+        capsuleCollider.height = playerHeight;
     }
 
     private void StopPlayerMovement()
