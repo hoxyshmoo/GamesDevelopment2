@@ -41,7 +41,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
-    public KeyCode crouchKey = KeyCode.LeftControl;
+    public KeyCode crouchKey = KeyCode.LeftAlt;
+    public KeyCode slideKey = KeyCode.Q;
 
     [Header("Ground Check")]
     public LayerMask whatIsGround;
@@ -62,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
     private WallClimbing climbScript;
     public bool isMoving { get; private set; }
     private Rigidbody rb;
+    private Sliding slidingMovement;
 
     float horizontalInput;
     float verticalInput;
@@ -101,6 +103,7 @@ public class PlayerMovement : MonoBehaviour
         lockedLookCam = GameObject.FindWithTag("CameraLockedLook");
         animator = GetComponentInChildren<PlayerAnimation>();
         capsuleCollider = GetComponentInChildren<CapsuleCollider>();
+        slidingMovement = GetComponentInChildren<Sliding>();
 
     }
 
@@ -113,6 +116,8 @@ public class PlayerMovement : MonoBehaviour
         lockedLookCam.SetActive(false);
         heightWhenNotCrouching = playerHeight;
     }
+    
+    // ToDo: Make the capsule smaller when the player is crouching
 
     private void Update()
     {
@@ -176,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
             // The movement is also stopped for a short period of time to make it realistic
             if (state == MovementState.walking)
             {
-                float delayBeforeMovementStop = 0.3f;
+                float delayBeforeMovementStop = 0.1f;
                 float delayBeforeJump = 0.4f;
                 readyToJump = false;
                 animator.TriggerJump();
@@ -193,8 +198,8 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        // start crouch
-        if (Input.GetKeyDown(crouchKey) && !isMoving)
+        // start crouch if the player is not moving and presses the crouching key
+        if (Input.GetKeyDown(crouchKey) && !isMoving && grounded)
         {
             // Move the capsule collider to the new temporary position
             capsuleCollider.center = new Vector3(0f, yOffSetWhenCrouching, 0f);
@@ -215,6 +220,14 @@ public class PlayerMovement : MonoBehaviour
             capsuleCollider.height = heightWhenNotCrouching;
             crouching = false;
         }
+        
+        // Start sliding if the player is sprinting and presses the button
+        if (Input.GetKeyDown(slideKey) && Input.GetKey(sprintKey) && isMoving && grounded && !sliding)
+            slidingMovement.StartSlide();
+        
+        // Stop sliding
+        if (Input.GetKeyUp(slideKey) && sliding)
+            slidingMovement.StopSlide();
     }
 
     private void StopPlayerMovement()
@@ -275,13 +288,14 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Mode - Sprinting
-        else if (grounded && Input.GetKey(sprintKey))
+        else if (grounded && Input.GetKey(sprintKey) && isMoving && !sliding)
         {
             state = MovementState.sprinting;
             desiredMoveSpeed = sprintSpeed;
+            
+            // Disable the free look camera and enable the sprint locked camera
             freeLookCam.SetActive(false);
             lockedLookCam.SetActive(true);
-            // freeLookCam.m_Lens.FieldOfView = FocusedFOV;
         }
 
         // Mode - Walking
@@ -289,9 +303,10 @@ public class PlayerMovement : MonoBehaviour
         {
             state = MovementState.walking;
             desiredMoveSpeed = walkSpeed;
+            
+            // Enable the free look camera and disable the locked camera which is for sprinting
             freeLookCam.SetActive(true);
             lockedLookCam.SetActive(false);
-            // freeLookCam.m_Lens.FieldOfView = FreeLookFOV;
         }
 
         // Mode - Air
