@@ -25,7 +25,6 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("Crouching", playerMovement.state == PlayerMovement.MovementState.crouching);
         animator.SetBool("Sliding", playerMovement.state == PlayerMovement.MovementState.sliding);
         animator.SetBool("IsWallRunning", playerMovement.state == PlayerMovement.MovementState.wallrunning);
-        animator.SetBool("IsInAir", playerMovement.state == PlayerMovement.MovementState.air);
         animator.SetBool("MirrorAnimation", wallRunning.wallRight);
     }
 
