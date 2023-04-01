@@ -162,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
             if (state == MovementState.sprinting)
             {
                 readyToJump = false;
-                animator.TriggerJump();
+                animator.JumpTrigger();
 
                 Jump();
 
@@ -176,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
                 float delayBeforeMovementStop = 0.1f;
                 float delayBeforeJump = 0.533f;
                 readyToJump = false;
-                animator.TriggerJump();
+                animator.JumpTrigger();
 
                 // Stop the player movement right before jumping
                 Invoke(nameof(StopPlayerMovement), delayBeforeMovementStop);

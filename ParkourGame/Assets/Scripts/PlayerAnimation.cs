@@ -22,14 +22,20 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("IsMoving", playerMovement.isMoving);
         animator.SetBool("IsRunning", playerMovement.state == PlayerMovement.MovementState.sprinting);
         animator.SetBool("IsOnGround", playerMovement.grounded);
-        animator.SetBool("Crouching", playerMovement.state == PlayerMovement.MovementState.crouching);
-        animator.SetBool("Sliding", playerMovement.state == PlayerMovement.MovementState.sliding);
         animator.SetBool("IsWallRunning", playerMovement.state == PlayerMovement.MovementState.wallrunning);
+        animator.SetBool("IsClimbing", playerMovement.climbing);
+        animator.SetBool("IsSliding", playerMovement.state == PlayerMovement.MovementState.sliding);
+        animator.SetBool("IsCrouching", playerMovement.state == PlayerMovement.MovementState.crouching);
         animator.SetBool("MirrorAnimation", wallRunning.wallRight);
     }
 
-    public void TriggerJump()
+    public void JumpTrigger()
     {
-        animator.SetTrigger("Jump");
+        animator.SetTrigger("JumpTrigger");
+    }
+    
+    public void ClimbTrigger()
+    {
+        animator.SetTrigger("ClimbTrigger");
     }
 }
