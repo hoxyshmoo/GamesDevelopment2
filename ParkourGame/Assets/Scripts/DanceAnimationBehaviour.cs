@@ -7,7 +7,7 @@ public class DanceAnimationBehaviour : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // Randomly picks a dance animation from the blend tree
-        animator.SetFloat("DanceAnimationRandom", Random.value);
+        animator.SetFloat("DanceAnimationRandom", Random.Range(0,3));
     }
     
 }

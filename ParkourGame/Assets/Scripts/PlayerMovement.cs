@@ -174,7 +174,7 @@ public class PlayerMovement : MonoBehaviour
             if (state == MovementState.walking)
             {
                 float delayBeforeMovementStop = 0.1f;
-                float delayBeforeJump = 0.4f;
+                float delayBeforeJump = 0.533f;
                 readyToJump = false;
                 animator.TriggerJump();
 
@@ -182,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
                 Invoke(nameof(StopPlayerMovement), delayBeforeMovementStop);
 
                 // Resume the player movement and do the jumping
-                Invoke(nameof(ResumePlayerMovement), delayBeforeMovementStop);
+                Invoke(nameof(ResumePlayerMovement), delayBeforeJump);
                 Invoke(nameof(Jump), delayBeforeJump);
 
                 Invoke(nameof(ResetJump), jumpCooldown);
@@ -232,12 +232,12 @@ public class PlayerMovement : MonoBehaviour
         capsuleCollider.height = playerHeight;
     }
 
-    private void StopPlayerMovement()
+    public void StopPlayerMovement()
     {
         rb.isKinematic = true;
     }
     
-    private void ResumePlayerMovement()
+    public void ResumePlayerMovement()
     {
         rb.isKinematic = false;
     }
