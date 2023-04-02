@@ -3,11 +3,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [Header("Pause Menu")]
+    [SerializeField] private GameObject pauseCanvas;
+
+    [Header("Game State")]
     public float timer = 60f;
     public int score = 0;
     public int lives = 3;
@@ -15,10 +18,9 @@ public class GameManager : MonoBehaviour
     public float staminaCooldownTime = 5f;
     public float staminaRegenRate = 10f;
 
+    [Header("UI Elements")]
     public GameObject winScreen;
     public GameObject loseScreen;
-    public GameObject pauseScreen;
-
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI livesText;
@@ -42,20 +44,25 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("Menu");
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            TogglePause();
-        }
+        HandleInput();
 
         if (!isPaused)
         {
             UpdateTimer();
             UpdateStamina();
+        }
+    }
+
+    private void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePause();
         }
     }
 
@@ -86,12 +93,14 @@ public class GameManager : MonoBehaviour
         if (isPaused)
         {
             Time.timeScale = 0f;
-            pauseScreen.SetActive(true);
+            pauseCanvas.SetActive(true);
+            SetCursorVisibility(true);
         }
         else
         {
             Time.timeScale = 1f;
-            pauseScreen.SetActive(false);
+            pauseCanvas.SetActive(false);
+            SetCursorVisibility(true);
         }
     }
 
@@ -154,5 +163,11 @@ public class GameManager : MonoBehaviour
         }
 
         TogglePause();
+    }
+
+    private void SetCursorVisibility(bool isVisible)
+    {
+        Cursor.visible = isVisible;
+        Cursor.lockState = isVisible ? CursorLockMode.None : CursorLockMode.Locked;
     }
 }
