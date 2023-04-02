@@ -1,63 +1,67 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement")]
-    private float moveSpeed;
+    [Header("Movement")] private float moveSpeed;
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
-    public float walkSpeed;
-    public float sprintSpeed;
-    public float slideSpeed;
-    public float wallrunSpeed;
-    public float climbSpeed;
+    public float walkSpeed = 4f; // Was 7 before
+    public float sprintSpeed = 10f;
+    public float slideSpeed = 15f; // Was 30 before
+    public float wallrunSpeed = 8.5f;
+    public float climbSpeed = 3f;
+    public float playerHeight = 2f;
+    public float speedIncreaseMultiplier = 1.5f;
+    public float slopeIncreaseMultiplier = 2.5f;
+    public float groundDrag = 4f;
+    private float turnSmoothTime = 0.1f;
+    private float turnSmoothVelocity;
+    private Vector3 moveDirection;
 
-    public float speedIncreaseMultiplier;
-    public float slopeIncreaseMultiplier;
-
-    public float groundDrag;
-
-    [Header("Jumping")]
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
+    [Header("Jumping")] public float jumpForce = 12f;
+    public float jumpCooldown = 0.25f;
+    public float airMultiplier = 0.4f;
     bool readyToJump;
 
-    [Header("Crouching")]
-    public float crouchSpeed;
-    public float crouchYScale;
-    private float startYScale;
+    [Header("Crouching")] public float crouchSpeed = 1.5f; // Was 3.5 before
+    public float heightWhenCrouching = 0.5f;
+    private CapsuleCollider capsuleCollider;
+    private float yOffSetWhenCrouching = -0.5f;
 
-    [Header("Keybinds")]
-    public KeyCode jumpKey = KeyCode.Space;
+    [Header("Keybinds")] public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
-    public KeyCode crouchKey = KeyCode.LeftControl;
+    public KeyCode crouchKey = KeyCode.Q;
+    public KeyCode slideKey = KeyCode.Q;
 
-    [Header("Ground Check")]
-    public float playerHeight;
-    public LayerMask whatIsGround;
-    public bool grounded;
+    [Header("Ground Check")] public LayerMask whatIsGround;
+    public bool grounded { get; private set; }
 
-    [Header("Slope Handling")]
-    public float maxSlopeAngle;
+    [Header("Slope Handling")] public float maxSlopeAngle = 40f;
     private RaycastHit slopeHit;
     private bool exitingSlope;
-    
+
+    [Header("Camera Settings")] 
+    private Transform camera;
+    private GameObject freeLookCam;
+    private GameObject lockedLookCam;
+
+    [Header("References")] private PlayerAnimation animator;
     private WallClimbing climbScript;
-    private Transform orientation;
+    public bool isMoving { get; private set; }
+    private Rigidbody rb;
+    private Sliding slidingMovement;
 
     float horizontalInput;
     float verticalInput;
 
-    Vector3 moveDirection;
 
-    Rigidbody rb;
+    public MovementState state { get; private set; }
 
-    public MovementState state;
     public enum MovementState
     {
         walking,
@@ -77,28 +81,35 @@ public class PlayerMovement : MonoBehaviour
     public bool climbing;
     public bool freeze;
     public bool unlimited;
-    public bool restricted; 
-    private bool keepMomentum;
-    
+    public bool restricted;
 
+    private bool keepMomentum;
     // public TextMeshProUGUI text_speed;
     // public TextMeshProUGUI text_mode;
 
     private void Awake()
     {
         climbScript = GetComponent<WallClimbing>();
-        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        rb = GetComponent<Rigidbody>();
+        camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        freeLookCam = GameObject.FindWithTag("CameraFreeLook");
+        lockedLookCam = GameObject.FindWithTag("CameraLockedLook");
+        animator = GetComponentInChildren<PlayerAnimation>();
+        capsuleCollider = GetComponentInChildren<CapsuleCollider>();
+        slidingMovement = GetComponentInChildren<Sliding>();
+
     }
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-
+        isMoving = false;
         readyToJump = true;
-
-        startYScale = transform.localScale.y;
+        freeLookCam.SetActive(true);
+        lockedLookCam.SetActive(false);
     }
+
+    // ToDo: Make the capsule smaller when the player is crouching
 
     private void Update()
     {
@@ -108,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
         MyInput();
         SpeedControl();
         StateHandler();
-       // TextStuff();
+        // TextStuff();
 
         // handle drag
         if (grounded)
@@ -119,42 +130,109 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        CalculateMoveDirection();
         MovePlayer();
+    }
+
+    private void CalculateMoveDirection()
+    {
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
+        isMoving = direction.magnitude >= 0.1f;
+        if (isMoving)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity,
+                turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+        }
+        else
+        {
+            moveDirection = Vector3.zero;
+        }
     }
 
     private void MyInput()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-
         // when to jump
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded && isMoving)
         {
             readyToJump = false;
-
-            Jump();
-
+            animator.JumpTrigger();
+            
+            // When we jump while sprinting the jump is done instantly and it's called from here
+            if (state == MovementState.sprinting) Jump();
+            
+            // When we jump while walking we delay the start of the jump motion. For that the jump is called
+            // from the WalkingJumpAnimationBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
+
         }
 
-        // start crouch
-        if (Input.GetKeyDown(crouchKey) && horizontalInput == 0 && verticalInput == 0)
+        // start crouch if the player is not moving and presses the crouching key
+        if (Input.GetKeyDown(crouchKey) && grounded && !Input.GetKey(sprintKey))
         {
-            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-
             crouching = true;
+            changeCapsuleColliderToCrouchSize();
         }
 
         // stop crouch
-        if (Input.GetKeyUp(crouchKey))
+        if (Input.GetKeyUp(crouchKey) && crouching)
         {
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-
             crouching = false;
+            changeCapsuleColliderToPlayerSize();
+        }
+
+        // Start sliding if the player is sprinting and presses the button
+        if (Input.GetKeyDown(slideKey) && Input.GetKey(sprintKey) && isMoving && grounded && !sliding)
+        {
+            slidingMovement.StartSlide();
+            changeCapsuleColliderToCrouchSize();
+
         }
     }
 
+    private void changeCapsuleColliderToCrouchSize()
+    {
+        // Move the capsule collider to the new temporary position
+        capsuleCollider.center = new Vector3(0f, yOffSetWhenCrouching, 0f);
+
+        // Make it smaller
+        capsuleCollider.height = heightWhenCrouching;
+    }
+    
+    public void changeCapsuleColliderToJumpSize()
+    {
+        // Move the capsule collider to the new temporary position
+        capsuleCollider.center = new Vector3(0f, -0.25f, 0f);
+        
+        // Make it smaller
+        capsuleCollider.height = 1.5f;
+    }
+
+    
+    public void changeCapsuleColliderToPlayerSize()
+    {
+        // Move the capsule back to it's original position
+        capsuleCollider.center = new Vector3(0f, 0, 0f);
+
+        // Change the height back to original
+        capsuleCollider.height = playerHeight;
+    }
+
+    public void StopPlayerMovement()
+    {
+        rb.isKinematic = true;
+    }
+    
+    public void ResumePlayerMovement()
+    {
+        rb.isKinematic = false;
+    }
+    
     private void StateHandler()
     {
         if(freeze){
@@ -203,10 +281,14 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Mode - Sprinting
-        else if (grounded && Input.GetKey(sprintKey))
+        else if (grounded && Input.GetKey(sprintKey) && isMoving && !sliding)
         {
             state = MovementState.sprinting;
             desiredMoveSpeed = sprintSpeed;
+            
+            // Disable the free look camera and enable the sprint locked camera
+            freeLookCam.SetActive(false);
+            lockedLookCam.SetActive(true);
         }
 
         // Mode - Walking
@@ -214,6 +296,10 @@ public class PlayerMovement : MonoBehaviour
         {
             state = MovementState.walking;
             desiredMoveSpeed = walkSpeed;
+            
+            // Enable the free look camera and disable the locked camera which is for sprinting
+            freeLookCam.SetActive(true);
+            lockedLookCam.SetActive(false);
         }
 
         // Mode - Air
@@ -287,19 +373,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        if(restricted){
+        if(restricted || climbScript.exitingWall){
             return; 
         }
-        if(climbScript.exitingWall){
-            return;
-        }
-        // calculate movement direction
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         // on slope
         if (OnSlope() && !exitingSlope)
         {
-            rb.AddForce(GetSlopeMoveDirection(moveDirection) * moveSpeed * 20f, ForceMode.Force);
+            rb.AddForce(GetSlopeMoveDirection(moveDirection) * (moveSpeed * 20f), ForceMode.Force);
 
             if (rb.velocity.y > 0)
                 rb.AddForce(Vector3.down * 80f, ForceMode.Force);
@@ -307,11 +388,11 @@ public class PlayerMovement : MonoBehaviour
 
         // on ground
         else if (grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * (moveSpeed * 10f), ForceMode.Force);
 
         // in air
         else if (!grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * (moveSpeed * 10f * airMultiplier), ForceMode.Force);
 
         // turn gravity off while on slope
         if(!wallrunning) rb.useGravity = !OnSlope();
@@ -340,7 +421,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Jump()
+    public void Jump()
     {
         exitingSlope = true;
 

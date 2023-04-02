@@ -6,7 +6,8 @@ TagManager:
   tags:
   - Orientation
   - CameraPos
-  - CameraHolder
+  - CameraFreeLook
+  - CameraLockedLook
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class WallClimbing : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class WallClimbing : MonoBehaviour
     private Rigidbody rb;
     private PlayerMovement pm;
     private LedgeMovement lg;
+    private PlayerAnimation animator;
 
     [Header("Climbing")]
     public float climbSpeed;
@@ -46,9 +48,10 @@ public class WallClimbing : MonoBehaviour
 
     private void Start(){
         lg = GetComponent<LedgeMovement>();
-        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        orientation = transform;
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
+        animator = GetComponent<PlayerAnimation>();
     }
 
     private void Update()
@@ -110,8 +113,10 @@ public class WallClimbing : MonoBehaviour
 
     private void StartClimbing()
     {
+        
         climbing = true;
         pm.climbing = true;
+        animator.ClimbTrigger();
 
         lastWall = frontWallHit.transform;
         lastWallNormal = frontWallHit.normal;

@@ -8,7 +8,6 @@ public class LedgeMovement : MonoBehaviour
     [Header("References")]
     private PlayerMovement pm;
     private Transform orientation;
-    private Transform cam;
     private Rigidbody rb;
 
     [Header("Ledge Grabbing")]
@@ -32,7 +31,6 @@ public class LedgeMovement : MonoBehaviour
 
     private Transform lastLedge;
     private Transform currLedge;
-
     private RaycastHit ledgeHit;
 
     [Header("Exiting")]
@@ -42,8 +40,7 @@ public class LedgeMovement : MonoBehaviour
 
     private void Awake()
     {
-        cam = GameObject.FindWithTag("MainCamera").GetComponent<PlayerCamera>().transform;
-        orientation = GameObject.FindGameObjectWithTag("Orientation").transform;
+        orientation = transform;
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
 
@@ -83,7 +80,8 @@ public class LedgeMovement : MonoBehaviour
 
     private void LedgeDetection()
     {
-        bool ledgeDetected = Physics.SphereCast(transform.position, ledgeSphereCastRadius, cam.forward, out ledgeHit, ledgeDetectionLength, whatIsLedge);
+        // ToDo: Replaced cam.forward with transform.forward
+        bool ledgeDetected = Physics.SphereCast(transform.position, ledgeSphereCastRadius, transform.forward, out ledgeHit, ledgeDetectionLength, whatIsLedge);
 
         if (!ledgeDetected) return;
 
@@ -103,7 +101,8 @@ public class LedgeMovement : MonoBehaviour
 
     private void DelayedJumpForce()
     {
-        Vector3 forceToAdd = cam.forward * ledgeJumpForwardForce + orientation.up * ledgeJumpUpwardForce;
+        // ToDo: Replaced cam.forward with transform.forward
+        Vector3 forceToAdd = transform.forward * ledgeJumpForwardForce + orientation.up * ledgeJumpUpwardForce;
         rb.velocity = Vector3.zero;
         rb.AddForce(forceToAdd, ForceMode.Impulse);
     }
@@ -133,7 +132,7 @@ public class LedgeMovement : MonoBehaviour
         if(distanceToLedge > 1f)
         {
             if(rb.velocity.magnitude < moveToLedgeSpeed)
-                rb.AddForce(directionToLedge.normalized * moveToLedgeSpeed * 1000f * Time.deltaTime);
+                rb.AddForce(directionToLedge.normalized * (moveToLedgeSpeed * 1000f * Time.deltaTime));
         }
 
         // Hold onto ledge
