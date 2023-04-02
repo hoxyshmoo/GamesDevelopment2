@@ -159,34 +159,15 @@ public class PlayerMovement : MonoBehaviour
         // when to jump
         if (Input.GetKeyDown(jumpKey) && readyToJump && grounded && isMoving)
         {
-            if (state == MovementState.sprinting)
-            {
-                readyToJump = false;
-                animator.JumpTrigger();
-
-                Jump();
-
-                Invoke(nameof(ResetJump), jumpCooldown);
-            }
-
-            // When we jump while walking we delay the start of the jump motion to sync with the animation
-            // The movement is also stopped for a short period of time to make it realistic
-            if (state == MovementState.walking)
-            {
-                float delayBeforeMovementStop = 0.1f;
-                float delayBeforeJump = 0.533f;
-                readyToJump = false;
-                animator.JumpTrigger();
-
-                // Stop the player movement right before jumping
-                Invoke(nameof(StopPlayerMovement), delayBeforeMovementStop);
-
-                // Resume the player movement and do the jumping
-                Invoke(nameof(ResumePlayerMovement), delayBeforeJump);
-                Invoke(nameof(Jump), delayBeforeJump);
-
-                Invoke(nameof(ResetJump), jumpCooldown);
-            }
+            readyToJump = false;
+            animator.JumpTrigger();
+            
+            // When we jump while sprinting the jump is done instantly and it's called from here
+            if (state == MovementState.sprinting) Jump();
+            
+            // When we jump while walking we delay the start of the jump motion. For that the jump is called
+            // from the WalkingJumpAnimationBehaviour
+            Invoke(nameof(ResetJump), jumpCooldown);
 
         }
 
@@ -222,6 +203,16 @@ public class PlayerMovement : MonoBehaviour
         // Make it smaller
         capsuleCollider.height = heightWhenCrouching;
     }
+    
+    public void changeCapsuleColliderToJumpSize()
+    {
+        // Move the capsule collider to the new temporary position
+        capsuleCollider.center = new Vector3(0f, -0.25f, 0f);
+        
+        // Make it smaller
+        capsuleCollider.height = 1.5f;
+    }
+
     
     public void changeCapsuleColliderToPlayerSize()
     {
@@ -430,7 +421,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Jump()
+    public void Jump()
     {
         exitingSlope = true;
 
