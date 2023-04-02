@@ -1,51 +1,38 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HeartsBar : MonoBehaviour
 {
+    public int maxHealth = 3;
     public Image[] hearts;
     public Sprite fullHeart;
-    public int maxHearts = 3;
-    private int currentHearts;
+    public Sprite emptyHeart;
 
-    void Start()
-    {
-        currentHearts = maxHearts;
-        UpdateHeartsUI();
-    }
+    private int _health;
 
-    public void LoseHeart()
+    public int Health
     {
-        currentHearts--;
-        UpdateHeartsUI();
-        if (currentHearts <= 0)
+        get => _health;
+        set
         {
-            // Handle game over condition
+            _health = Mathf.Clamp(value, 0, maxHealth);
+            UpdateHeartsDisplay();
         }
     }
 
-    public void AddHeart()
+    private void Awake()
     {
-        if (currentHearts < maxHearts)
-        {
-            currentHearts++;
-            UpdateHeartsUI();
-        }
+        _health = maxHealth;
+        UpdateHeartsDisplay();
     }
 
-    private void UpdateHeartsUI()
+    private void UpdateHeartsDisplay()
     {
         for (int i = 0; i < hearts.Length; i++)
         {
-            if (i < currentHearts)
-            {
-                hearts[i].sprite = fullHeart;
-                hearts[i].enabled = true;
-            }
-            else
-            {
-                hearts[i].enabled = false;
-            }
+            hearts[i].sprite = i < _health ? fullHeart : emptyHeart;
         }
     }
 }
