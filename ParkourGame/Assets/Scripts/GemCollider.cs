@@ -27,7 +27,7 @@ public class GemCollider : MonoBehaviour
     {
         if (gameManager != null)
         {
-            gameManager.UpdateScore(100);
+            gameManager.UpdateScore();
         }
 
         if (collisionSound != null)

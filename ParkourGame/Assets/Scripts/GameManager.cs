@@ -11,37 +11,30 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject pauseCanvas;
 
     [Header("Game State")]
-    private float timer = 60f;
+    private float timer = 90f;
     private int score = 0;
-    private int FinalScore = 0;
     private int lives = 3;
-    private float stamina = 100f;
-    private float staminaCooldownTime = 5f;
-    private float staminaRegenRate = 10f;
+    private int amount = 100;
+
 
     [Header("UI Elements")]
     public GameObject winScreen;
     public GameObject loseScreen;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI livesText;
-    public TextMeshProUGUI staminaText;
-    public TextMeshProUGUI finalScoreText;
+    public TextMeshProUGUI winScoreText;
+    public TextMeshProUGUI lossScoreText;
 
 
     private bool isPaused = false;
-    private float staminaCooldownTimer = 0f;
+    public AudioSource audioSource;
 
-    void Awake()
-    {
-        
-    }
+
+  
 
     void Start()
     {
-        //SceneManager.LoadScene("Menu");
         scoreText.text = "Score: " + score;
-
     }
 
     void Update()
@@ -51,8 +44,8 @@ public class GameManager : MonoBehaviour
         if (!isPaused)
         {
             UpdateTimer();
-            UpdateStamina();
         }
+  
     }
 
     private void HandleInput()
@@ -65,21 +58,21 @@ public class GameManager : MonoBehaviour
 
     public void LoadTutorialScene()
     {
-        // SceneManager.LoadScene("Tutorial");
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        SceneManager.LoadScene("Tutorial");
         Time.timeScale = 1f;
 
     }
 
     public void LoadLevel1Scene()
     {
-        SceneManager.LoadScene("Level1Scene");
+        SceneManager.LoadScene("Level1");
+        Time.timeScale = 1f;
     }
 
     public void LoadMainMenuScene()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("Menu");
+        Time.timeScale = 1f;
     }
 
     public void QuitGame()
@@ -94,13 +87,13 @@ public class GameManager : MonoBehaviour
         if (isPaused)
         {
             Time.timeScale = 0f;
+            audioSource.volume = 0;
             pauseCanvas.SetActive(true);
-            SetCursorVisibility(true);
-            UpdateScore(1);
-        }
+            SetCursorVisibility(true);        }
         else
         {
             Time.timeScale = 1f;
+            audioSource.volume = 1;
             pauseCanvas.SetActive(false);
             SetCursorVisibility(true);
         }
@@ -119,19 +112,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdateScore(int amount)
+    public void UpdateScore()
     {
         score += amount;
+        
+
         scoreText.text = "Score: " + score;
-        FinalScore = score;
-        finalScoreText.text = "Score: " + score;
+        
     }
     
 
     public void UpdateLives(int amount)
     {
         lives += amount;
-        livesText.text = "Lives: " + lives;
 
         if (lives <= 0)
         {
@@ -141,8 +134,7 @@ public class GameManager : MonoBehaviour
     public void LifeLoss(int amount)
     {
         lives -= amount;
-        livesText.text = "Lives: " + lives;
-        timer = 60f;
+        timer = 90f;
 
         if (lives <= 0)
         {
@@ -150,34 +142,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void UpdateStamina()
-    {
-        if (stamina < 100f)
-        {
-            staminaCooldownTimer -= Time.deltaTime;
-
-            if (staminaCooldownTimer <= 0f)
-            {
-                stamina += staminaRegenRate * Time.deltaTime;
-                stamina = Mathf.Clamp(stamina, 0f, 100f);
-                staminaText.text = "Stamina: " + Mathf.RoundToInt(stamina);
-            }
-        }
-        else
-        {
-            staminaCooldownTimer = staminaCooldownTime;
-        }
-    }
+   
 
     public void EndGame(bool hasWon)
     {
         if (hasWon)
         {
             winScreen.SetActive(true);
+            audioSource.volume = 0;
+            winScoreText.text = "Final Score: " + score;
+
+
         }
         else
         {
             loseScreen.SetActive(true);
+            audioSource.volume = 0;
+            lossScoreText.text = "Final Score: " + score;
+
+
         }
 
         TogglePause();

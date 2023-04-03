@@ -45,4 +45,5 @@ When stamina is empty, player becomes immobilized and cant move.
  
 
 ## Reference used 
-[Movement Ability]: (https://www.youtube.com/watch?v=f473C43s8nE&t=8s)
++ [Movement Ability]: (https://www.youtube.com/watch?v=f473C43s8nE&t=8s)
++ [Animation]: (https://www.mixamo.com/)
