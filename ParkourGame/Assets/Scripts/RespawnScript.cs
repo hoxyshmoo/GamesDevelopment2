@@ -10,10 +10,15 @@ public class RespawnScript : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] Transform spawnPoint;
     [SerializeField] float spawnValue;
+    [SerializeField] float screamValue;
 
     // Update is called once per frame
     void Update()
     {
+          if(player.transform.position.y < -screamValue)
+        {
+            //play audio here 
+        }
         if(player.transform.position.y < -spawnValue)
         {
             RespawnPoint();
