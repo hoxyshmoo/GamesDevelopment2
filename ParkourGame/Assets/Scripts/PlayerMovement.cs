@@ -113,6 +113,7 @@ public class PlayerMovement : MonoBehaviour
         readyToJump = true;
         freeLookCam.SetActive(true);
         lockedLookCam.SetActive(false);
+        Cursor.visible = false;
     }
     
 
@@ -161,13 +162,13 @@ public class PlayerMovement : MonoBehaviour
         var angleTemp = cameraFollowTarget.transform.localEulerAngles.x;
 
         //Clamp the Up/Down rotation
-        if (angleTemp > 180 && angleTemp < 340)
+        if (angleTemp > 180 && angleTemp < 300)
         {
-            angles.x = 340;
+            angles.x = 300;
         }
-        else if(angleTemp < 180 && angleTemp > 40)
+        else if(angleTemp < 180 && angleTemp > 60)
         {
-            angles.x = 40;
+            angles.x = 60;
         }
         cameraFollowTarget.transform.localEulerAngles = angles;
         #endregion
