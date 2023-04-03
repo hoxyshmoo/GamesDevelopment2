@@ -45,8 +45,8 @@ When stamina is empty, player becomes immobilized and cant move.
  
 
 ## Reference used 
-[Movement Ability]: (https://www.youtube.com/watch?v=f473C43s8nE&t=8s)
-[Hearts Bar UI]: (https://github.com/Brackeys/Health-Bar)
-[SFX]: (https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116)
-[Collectiables]: (https://assetstore.unity.com/packages/3d/props/sets-gems-19902) 
-[Background Images]: (https://openai.com/product/dall-e-2)
++ [Movement Ability] (https://www.youtube.com/watch?v=f473C43s8nE&t=8s)
++ [Hearts Bar UI] (https://github.com/Brackeys/Health-Bar)
++ [SFX] (https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116)
++ [Collectiables] (https://assetstore.unity.com/packages/3d/props/sets-gems-19902) 
++ [Background Images]  (https://openai.com/product/dall-e-2)
