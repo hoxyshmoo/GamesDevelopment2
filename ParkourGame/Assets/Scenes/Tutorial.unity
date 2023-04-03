@@ -123,19 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &14947913 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3155491023038021105, guid: f7f9841d4bca99a48996f5551e27f239, type: 3}
-  m_PrefabInstance: {fileID: 1105016357}
-  m_PrefabAsset: {fileID: 0}
---- !u!81 &14947915
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14947913}
-  m_Enabled: 1
 --- !u!1 &21699076
 GameObject:
   m_ObjectHideFlags: 0
@@ -5579,7 +5566,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh62232
+  m_Name: pb_Mesh28480
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -23930,7 +23917,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh62194
+  m_Name: pb_Mesh28442
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -27802,11 +27789,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3155491021682121513, guid: f7f9841d4bca99a48996f5551e27f239, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000017698474
+      value: 0.000000017698456
       objectReference: {fileID: 0}
     - target: {fileID: 3155491021682121513, guid: f7f9841d4bca99a48996f5551e27f239, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000011521815
+      value: -0.0000000011521804
       objectReference: {fileID: 0}
     - target: {fileID: 3155491021905666427, guid: f7f9841d4bca99a48996f5551e27f239, type: 3}
       propertyPath: field of view
@@ -27886,15 +27873,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3155491022366891306, guid: f7f9841d4bca99a48996f5551e27f239, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.065834634
+      value: -0.065834604
       objectReference: {fileID: 0}
     - target: {fileID: 3155491022366891306, guid: f7f9841d4bca99a48996f5551e27f239, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.0028012767
+      value: -0.0028359802
       objectReference: {fileID: 0}
     - target: {fileID: 3155491022366891306, guid: f7f9841d4bca99a48996f5551e27f239, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00018482264
+      value: -0.00018711228
       objectReference: {fileID: 0}
     - target: {fileID: 3155491022607292032, guid: f7f9841d4bca99a48996f5551e27f239, type: 3}
       propertyPath: m_LocalPosition.x
@@ -28020,7 +28007,8 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.0000000011114167
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3155491021905666424, guid: f7f9841d4bca99a48996f5551e27f239, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f7f9841d4bca99a48996f5551e27f239, type: 3}
 --- !u!1 &1113345592
 GameObject:
@@ -50211,6 +50199,16 @@ MonoBehaviour:
   player: {fileID: 1502527900}
   spawnPoint: {fileID: 1819759251}
   spawnValue: 20
+  screamValue: 4
+  screamAudio: {fileID: 8300000, guid: a235d590ef2a04d1b85b61ef4c21337c, type: 3}
+--- !u!81 &2035090434
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502527900}
+  m_Enabled: 1
 --- !u!43 &2072707664
 Mesh:
   m_ObjectHideFlags: 0

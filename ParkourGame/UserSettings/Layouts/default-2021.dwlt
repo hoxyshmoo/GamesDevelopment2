@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1521.6
     height: 758.4
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Scene
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 46656
+  controlID: 7921
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 46626
+  controlID: 7959
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -375,9 +375,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: d4620000
-      m_LastClickedID: 0
-      m_ExpandedIDs: e263feff586bfefffaa7feffd2affeffdccbffff98d2ffff80f7ffff16fbffff026600000a66000030f100004cf4000068d302006ed5020086d50200
+      m_SelectedIDs: 44700000
+      m_LastClickedID: 28740
+      m_ExpandedIDs: 9cf2ffff36f8ffff1afbffff88700000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -659,9 +659,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 616.75, y: 274.75, z: 0}
+    m_Target: {x: 27.80064, y: 24.33255, z: 75.6044}
     speed: 2
-    m_Value: {x: 616.75, y: 274.75, z: 0}
+    m_Value: {x: 27.80064, y: 24.33255, z: 75.6044}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -712,9 +712,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: -0.0023977188, y: -0.004498683, z: 0.000011375946, w: -0.9999812}
   m_Size:
-    m_Target: 240.75247
+    m_Target: 9.150291
     speed: 2
-    m_Value: 240.75247
+    m_Value: 9.150291
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -844,22 +844,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/CasualGameSounds
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/CasualGameSounds
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\malek\Documents\GitHub\GamesDevelopment2\ParkourGame
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 364.59998}
-    m_SelectedIDs: 6e620000
-    m_LastClickedID: 25198
-    m_ExpandedIDs: 000000003e62000040620000426200004462000046620000486200004a6200004c6200004e6200005662000000ca9a3b
+    scrollPos: {x: 0, y: 79}
+    m_SelectedIDs: fa650000
+    m_LastClickedID: 26106
+    m_ExpandedIDs: 00000000526500005465000056650000586500005a6500005c6500005e6500006065000062650000f065000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -887,7 +887,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000003e62000040620000426200004462000046620000486200004a6200004c6200004e62000000ca9a3b
+    m_ExpandedIDs: 00000000526500005465000056650000586500005a6500005c6500005e650000606500006265000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -914,7 +914,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c62300006c610000ae620000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
