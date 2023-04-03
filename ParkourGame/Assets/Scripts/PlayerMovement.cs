@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         float mouseInputX = Input.GetAxis ("Mouse X");
-        float mouseInputY = Input.GetAxis ("Mouse Y");
+        float mouseInputY = Input.GetAxis ("Mouse Y") * -1;
         Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
         
         
