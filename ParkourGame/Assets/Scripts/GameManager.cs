@@ -34,15 +34,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        
     }
 
     void Start()
@@ -73,7 +65,11 @@ public class GameManager : MonoBehaviour
 
     public void LoadTutorialScene()
     {
-        SceneManager.LoadScene("TutorialScene");
+        // SceneManager.LoadScene("Tutorial");
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
+        Time.timeScale = 1f;
+
     }
 
     public void LoadLevel1Scene()
