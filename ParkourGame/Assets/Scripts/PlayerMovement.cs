@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using TMPro;
+using TMPro.Examples;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -45,7 +46,9 @@ public class PlayerMovement : MonoBehaviour
     private RaycastHit slopeHit;
     private bool exitingSlope;
 
-    [Header("Camera Settings")] 
+    [Header("Camera Settings")]
+    public float rotationPower = 5f;
+    public float rotationLerp = 0.5f;
     private Transform camera;
     private GameObject freeLookCam;
     private GameObject lockedLookCam;
@@ -55,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isMoving { get; private set; }
     private Rigidbody rb;
     private Sliding slidingMovement;
+    private GameObject cameraFollowTarget;
 
     float horizontalInput;
     float verticalInput;
@@ -97,8 +101,10 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponentInChildren<PlayerAnimation>();
         capsuleCollider = GetComponentInChildren<CapsuleCollider>();
         slidingMovement = GetComponentInChildren<Sliding>();
+        cameraFollowTarget = GameObject.FindWithTag("FollowTarget");
 
     }
+    
 
     private void Start()
     {
@@ -108,8 +114,7 @@ public class PlayerMovement : MonoBehaviour
         freeLookCam.SetActive(true);
         lockedLookCam.SetActive(false);
     }
-
-    // ToDo: Make the capsule smaller when the player is crouching
+    
 
     private void Update()
     {
@@ -138,18 +143,49 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+        float mouseInputX = Input.GetAxis ("Mouse X");
+        float mouseInputY = Input.GetAxis ("Mouse Y") * -1;
         Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
+        
+        
+        #region Camera Horizontal Rotation
+        cameraFollowTarget.transform.rotation *= Quaternion.AngleAxis(mouseInputX * rotationPower, Vector3.up);
+        #endregion
+        
+        #region Camera Vertical Rotation
+        cameraFollowTarget.transform.rotation *= Quaternion.AngleAxis(mouseInputY * rotationPower, Vector3.right);
+
+        var angles = cameraFollowTarget.transform.localEulerAngles;
+        angles.z = 0;
+
+        var angleTemp = cameraFollowTarget.transform.localEulerAngles.x;
+
+        //Clamp the Up/Down rotation
+        if (angleTemp > 180 && angleTemp < 340)
+        {
+            angles.x = 340;
+        }
+        else if(angleTemp < 180 && angleTemp > 40)
+        {
+            angles.x = 40;
+        }
+        cameraFollowTarget.transform.localEulerAngles = angles;
+        #endregion
         isMoving = direction.magnitude >= 0.1f;
+        
+        //Set the player rotation based on the camera
+        transform.rotation = Quaternion.Euler(0, cameraFollowTarget.transform.rotation.eulerAngles.y, 0);
         if (isMoving)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity,
-                turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
             moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            //reset the y rotation of the look transform
+            cameraFollowTarget.transform.localEulerAngles = new Vector3(angles.x, 0, 0);
         }
         else
         {
+            //reset the y rotation of the look transform
+            cameraFollowTarget.transform.localEulerAngles = new Vector3(angles.x, 0, 0);
             moveDirection = Vector3.zero;
         }
     }
