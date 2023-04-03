@@ -5,34 +5,30 @@ using UnityEngine.UI;
 
 public class HeartsBar : MonoBehaviour
 {
-    public int maxHealth = 3;
+    public static int health = 3;
+
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
-    private int _health;
-
-    public int Health
+    void Awake()
     {
-        get => _health;
-        set
+        health = 3;
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        foreach (Image img in hearts)
         {
-            _health = Mathf.Clamp(value, 0, maxHealth);
-            UpdateHeartsDisplay();
+            img.sprite = emptyHeart;
+        }
+        for (int i = 0; i < health; i++)
+        {
+            hearts[i].sprite = fullHeart;
         }
     }
-
-    private void Awake()
+    public void LoseHeart()
     {
-        _health = maxHealth;
-        UpdateHeartsDisplay();
-    }
-
-    private void UpdateHeartsDisplay()
-    {
-        for (int i = 0; i < hearts.Length; i++)
-        {
-            hearts[i].sprite = i < _health ? fullHeart : emptyHeart;
-        }
+        health--;
     }
 }

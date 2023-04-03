@@ -11,12 +11,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject pauseCanvas;
 
     [Header("Game State")]
-    public float timer = 60f;
-    public int score = 0;
-    public int lives = 3;
-    public float stamina = 100f;
-    public float staminaCooldownTime = 5f;
-    public float staminaRegenRate = 10f;
+    private float timer = 60f;
+    private int score = 0;
+    private int FinalScore = 0;
+    private int lives = 3;
+    private float stamina = 100f;
+    private float staminaCooldownTime = 5f;
+    private float staminaRegenRate = 10f;
 
     [Header("UI Elements")]
     public GameObject winScreen;
@@ -25,6 +26,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI staminaText;
+    public TextMeshProUGUI finalScoreText;
+
 
     private bool isPaused = false;
     private float staminaCooldownTimer = 0f;
@@ -44,7 +47,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        SceneManager.LoadScene("Menu");
+        //SceneManager.LoadScene("Menu");
+        scoreText.text = "Score: " + score;
+
     }
 
     void Update()
@@ -95,6 +100,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0f;
             pauseCanvas.SetActive(true);
             SetCursorVisibility(true);
+            UpdateScore(1);
         }
         else
         {
@@ -108,6 +114,8 @@ public class GameManager : MonoBehaviour
     {
         timer -= Time.deltaTime;
         timerText.text = "Time: " + Mathf.RoundToInt(timer);
+        
+
 
         if (timer <= 0f)
         {
@@ -119,12 +127,26 @@ public class GameManager : MonoBehaviour
     {
         score += amount;
         scoreText.text = "Score: " + score;
+        FinalScore = score;
+        finalScoreText.text = "Score: " + score;
     }
+    
 
     public void UpdateLives(int amount)
     {
         lives += amount;
         livesText.text = "Lives: " + lives;
+
+        if (lives <= 0)
+        {
+            EndGame(false);
+        }
+    }
+    public void LifeLoss(int amount)
+    {
+        lives -= amount;
+        livesText.text = "Lives: " + lives;
+        timer = 60f;
 
         if (lives <= 0)
         {

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RespawnScript : MonoBehaviour
 {
+    public GameManager gameManager;
+    public HeartsBar heartsBar;
 
     [SerializeField] GameObject player;
     [SerializeField] Transform spawnPoint;
@@ -21,6 +23,8 @@ public class RespawnScript : MonoBehaviour
     void RespawnPoint()
     {
         transform.position = spawnPoint.position;
+        gameManager.LifeLoss(1);
+        heartsBar.LoseHeart();
     }
       
 }
