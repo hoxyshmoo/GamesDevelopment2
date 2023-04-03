@@ -10,7 +10,8 @@ Will he find himself back home or will he be stuck forever parkouring his way th
 
 ## Installation
 
-Unsure
+To install Joe's Adventure, simply download the game files and extract them to a desired location on your PC. 
+Then, lunch the executable file.
 
 ## Gameplay
 ### Controls
